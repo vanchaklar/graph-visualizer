@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Graph Visualizer</title>
+    <link rel="stylesheet" href="css/styles.css">
+</head>
+<body>
+    <div id="graph-container"></div>
+    <div id="notification" style="display: none;"></div>
+    <div class="container">
+        <div class="graph-view">
+            <div class="controls">
+                <div class="button-group">
+                    <button id="add-node">Add Node</button>
+                    <button id="add-edge">Add Edge</button>
+                    <button id="clear">Clear</button>
+                    <button id="save-graph">Save JSON</button>
+                    <button id="export-image">Export Image</button>
+                    <input type="file" id="load-graph" accept=".json" style="display: none;">
+                    <button id="load-graph-btn">Load</button>
+                </div>
+                <div class="search-container">
+                    <input type="text" id="search-input" placeholder="Search nodes and edges...">
+                </div>
+                <div class="slider-group">
+            <label>
+                Spring Length
+                <input type="range" id="spring-length" min="50" max="200" value="100">
+            </label>
+            <label>
+                Spring Strength
+                <input type="range" id="spring-strength" min="1" max="20" value="10">
+            </label>
+            <label>
+                Repulsion
+                <input type="range" id="repulsion" min="500" max="2000" value="1000">
+            </label>
+            <label>
+                Damping
+                <input type="range" id="damping" min="50" max="99" value="90">
+            </label>
+        </div>
+    </div>
+    <div class="data-view">
+        <div class="table-container">
+            <h3>Nodes</h3>
+            <table id="nodes-table">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Label</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+
+            <h3>Edges</h3>
+            <table id="edges-table">
+                <thead>
+                    <tr>
+                        <th>Source</th>
+                        <th>Target</th>
+                        <th>Label</th>
+                    </tr>
+                </thead>
+                <tbody></tbody>
+            </table>
+        </div>
+    </div>
+</div>
+    <script src="js/visualizer.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            const visualizer = new GraphVisualizer('graph-container');
+            
+            document.getElementById('add-node').addEventListener('click', () => {
+                const label = prompt('Enter node label:');
+                if (label) {
+                    visualizer.addNode(`node-${Date.now()}`, label);
+                }
+            });
+
+            document.getElementById('add-edge').addEventListener('click', () => {
+                const sourceId = prompt('Enter source node ID:');
+                const targetId = prompt('Enter target node ID:');
+                const label = prompt('Enter edge label:');
+                if (sourceId && targetId) {
+                    visualizer.addEdge(sourceId, targetId, label);
+                }
+            });
+
+            document.getElementById('clear').addEventListener('click', () => {
+                visualizer.clear();
+            });
+
+            // Save and Load functionality
+            document.getElementById('save-graph').addEventListener('click', () => {
+                visualizer.saveGraph();
+            });
+
+            document.getElementById('load-graph-btn').addEventListener('click', () => {
+                document.getElementById('load-graph').click();
+            });
+
+            document.getElementById('load-graph').addEventListener('change', (e) => {
+                if (e.target.files.length > 0) {
+                    visualizer.loadGraph(e.target.files[0]);
+                }
+            });
+
+            document.getElementById('export-image').addEventListener('click', () => {
+                visualizer.exportImage();
+            });
+
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                visualizer.searchGraph(e.target.value);
+            });
+
+        // Add simulation control listeners
+        document.getElementById('spring-length').addEventListener('input', (e) => {
+            visualizer.simulation.springLength = parseInt(e.target.value);
+            visualizer.applyForces();
+        });
+
+        document.getElementById('spring-strength').addEventListener('input', (e) => {
+            visualizer.simulation.springStrength = parseInt(e.target.value) / 100;
+            visualizer.applyForces();
+        });
+
+        document.getElementById('repulsion').addEventListener('input', (e) => {
+            visualizer.simulation.repulsion = parseInt(e.target.value);
+            visualizer.applyForces();
+        });
+
+        document.getElementById('damping').addEventListener('input', (e) => {
+            visualizer.simulation.damping = parseInt(e.target.value) / 100;
+            visualizer.applyForces();
+        });
+    });
+    </script>
+</body>
+</html>
