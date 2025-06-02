@@ -530,6 +530,4 @@ class GraphVisualizer {
             }
         });
     }
-
-    // ...existing code...
 }
