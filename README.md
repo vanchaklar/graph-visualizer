@@ -2,6 +2,8 @@
 
 An interactive web-based graph visualization tool that allows users to create, manipulate, and analyze directed graphs with labeled nodes and edges.
 
+![Graph Visualizer Demo](demo.png)
+
 ## Features
 
 - Interactive graph visualization with drag-and-drop nodes
