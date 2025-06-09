@@ -228,3 +228,9 @@ tr.highlight {
 .hidden {
     display: none;
 }
+
+.boundary-input {
+    width: 70px;
+    margin: 0 5px;
+    padding: 2px 5px;
+}

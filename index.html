@@ -23,23 +23,27 @@
                     <input type="text" id="search-input" placeholder="Search nodes and edges...">
                 </div>
                 <div class="slider-group">
-            <label>
-                Spring Length
-                <input type="range" id="spring-length" min="50" max="200" value="100">
-            </label>
-            <label>
-                Spring Strength
-                <input type="range" id="spring-strength" min="1" max="20" value="10">
-            </label>
-            <label>
-                Repulsion
-                <input type="range" id="repulsion" min="500" max="2000" value="1000">
-            </label>
-            <label>
-                Damping
-                <input type="range" id="damping" min="50" max="99" value="90">
-            </label>
-        </div>
+                    <label>
+                        Spring Length
+                        <input type="range" id="spring-length" min="50" max="200" value="100">
+                    </label>
+                    <label>
+                        Spring Strength
+                        <input type="range" id="spring-strength" min="1" max="20" value="10">
+                    </label>
+                    <label>
+                        Repulsion
+                        <input type="range" id="repulsion" min="500" max="2000" value="1000">
+                    </label>
+                    <label>
+                        Gravity Force
+                        <input type="range" id="center-force" min="1" max="20" value="10">
+                    </label>
+                    <label>
+                        Damping
+                        <input type="range" id="damping" min="50" max="99" value="90">
+                    </label>
+                </div>
     </div>
     <div class="data-view">
         <div class="table-container">
@@ -70,8 +74,9 @@
 </div>
     <script src="js/visualizer.js"></script>
     <script>
+        let visualizer;
         document.addEventListener('DOMContentLoaded', () => {
-            const visualizer = new GraphVisualizer('graph-container');
+            visualizer = new GraphVisualizer('graph-container');
             
             document.getElementById('add-node').addEventListener('click', () => {
                 const label = prompt('Enter node label:');
@@ -129,6 +134,11 @@
 
         document.getElementById('repulsion').addEventListener('input', (e) => {
             visualizer.simulation.repulsion = parseInt(e.target.value);
+            visualizer.applyForces();
+        });
+
+        document.getElementById('center-force').addEventListener('input', (e) => {
+            visualizer.simulation.centerForce = parseInt(e.target.value) / 100;
             visualizer.applyForces();
         });
 
